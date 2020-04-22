@@ -1,0 +1,4 @@
+#+TITLE: nand2tetris
+
+My repo for the MOOC "Build a Modern Computer from First Principles: From
+Nand to Tetris" ([[https://www.coursera.org/learn/build-a-computer][Coursera]]).
