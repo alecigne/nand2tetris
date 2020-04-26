@@ -7,12 +7,13 @@ available on [[https://www.coursera.org/learn/build-a-computer][Coursera]].
 * Progress
 
 - [X] Week 1: Boolean Functions and Gate Logic
-- [ ] Week 2: Boolean Arithmetic and the ALU
+- [X] Week 2: Boolean Arithmetic and the ALU
+- [ ] Week 3: Memory
 
 * Logisim files
 
-I also try to implement chips in [[http://www.cburch.com/logisim/][Logisim]] files (=.circ=). I might give
-a try to [[https://github.com/hneemann/Digital][Digital]] later.
+My goal is to implement most chips with [[http://www.cburch.com/logisim/][Logisim]] (=.circ= files). I
+might give a try to [[https://github.com/hneemann/Digital][Digital]] later.
 
 Here is the =Mux16= gate for example:
 
@@ -46,9 +47,9 @@ And here is the corresponding HDL file:
 #+end_example
 
 When a chip has been implemented before, then I use the corresponding
-Logisim's built-in chip. For example, in this implementation of Mux16,
-I use Logisim's Mux, but the multiplexer itself has been implemented
-before from And, Not and Or:
+Logisim's built-in chip when it's available. For example, in this
+implementation of Mux16, I use Logisim's Mux, but the multiplexer
+itself has been implemented before from And, Not and Or:
 
 [[file:.nand2tetris/Mux.png]]
 
