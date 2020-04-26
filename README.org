@@ -4,37 +4,65 @@ My repo for the [[https://www.nand2tetris.org/]["nand2tetris" project]]. The cor
 a Modern Computer from First Principles: From Nand to Tetris", is
 available on [[https://www.coursera.org/learn/build-a-computer][Coursera]].
 
-This repo also contains [[http://www.cburch.com/logisim/][Logisim]] files (=.circ=). This is still a work
-in progress for project 01, available on the [[https://github.com/alecigne/nand2tetris/tree/project-01-logisim][=project-01-logisim=]]
-branch.
+* Progress
 
-Here is the =Not16= gate for example:
+- [X] Week 1: Boolean Functions and Gate Logic
+- [ ] Week 2: Boolean Arithmetic and the ALU
 
-[[file:.nand2tetris/Not16.png]]
+* Logisim files
 
-The corresponding HDL file:
+I also try to implement chips in [[http://www.cburch.com/logisim/][Logisim]] files (=.circ=). I might give
+a try to [[https://github.com/hneemann/Digital][Digital]] later.
+
+Here is the =Mux16= gate for example:
+
+[[file:.nand2tetris/Mux16.png]]
+
+And here is the corresponding HDL file:
 
 #+begin_example
-  CHIP Not16 {
-          IN in[16];
+  CHIP Mux16 {
+          IN a[16], b[16], sel;
           OUT out[16];
 
           PARTS:
-          Not (in=in[0], out=out[0]);
-          Not (in=in[1], out=out[1]);
-          Not (in=in[2], out=out[2]);
-          Not (in=in[3], out=out[3]);
-          Not (in=in[4], out=out[4]);
-          Not (in=in[5], out=out[5]);
-          Not (in=in[6], out=out[6]);
-          Not (in=in[7], out=out[7]);
-          Not (in=in[8], out=out[8]);
-          Not (in=in[9], out=out[9]);
-          Not (in=in[10], out=out[10]);
-          Not (in=in[11], out=out[11]);
-          Not (in=in[12], out=out[12]);
-          Not (in=in[13], out=out[13]);
-          Not (in=in[14], out=out[14]);
-          Not (in=in[15], out=out[15]);
+          Mux(a=a[0], b=b[0], sel=sel, out=out[0]);
+          Mux(a=a[1], b=b[1], sel=sel, out=out[1]);
+          Mux(a=a[2], b=b[2], sel=sel, out=out[2]);
+          Mux(a=a[3], b=b[3], sel=sel, out=out[3]);
+          Mux(a=a[4], b=b[4], sel=sel, out=out[4]);
+          Mux(a=a[5], b=b[5], sel=sel, out=out[5]);
+          Mux(a=a[6], b=b[6], sel=sel, out=out[6]);
+          Mux(a=a[7], b=b[7], sel=sel, out=out[7]);
+          Mux(a=a[8], b=b[8], sel=sel, out=out[8]);
+          Mux(a=a[9], b=b[9], sel=sel, out=out[9]);
+          Mux(a=a[10], b=b[10], sel=sel, out=out[10]);
+          Mux(a=a[11], b=b[11], sel=sel, out=out[11]);
+          Mux(a=a[12], b=b[12], sel=sel, out=out[12]);
+          Mux(a=a[13], b=b[13], sel=sel, out=out[13]);
+          Mux(a=a[14], b=b[14], sel=sel, out=out[14]);
+          Mux(a=a[15], b=b[15], sel=sel, out=out[15]);
   }
 #+end_example
+
+When a chip has been implemented before, then I use the corresponding
+Logisim's built-in chip. For example, in this implementation of Mux16,
+I use Logisim's Mux, but the multiplexer itself has been implemented
+before from And, Not and Or:
+
+[[file:.nand2tetris/Mux.png]]
+
+#+begin_example
+  CHIP Mux {
+          IN a, b, sel;
+          OUT out;
+
+          PARTS:
+          Not (in=sel, out=notsel);
+          And (a=a, b=notsel, out=aAndNotsel);
+          And (a=sel, b=b, out= selAndb);
+          Or (a=aAndNotsel, b=selAndb, out=out);
+  }
+#+end_example
+
+...and so on all the way to [[https://en.wikipedia.org/wiki/NAND_gate][Nand]]!
