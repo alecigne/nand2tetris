@@ -8,7 +8,7 @@ available on [[https://www.coursera.org/learn/build-a-computer][Coursera]].
 
 - [X] Week 1: Boolean Functions and Gate Logic
 - [X] Week 2: Boolean Arithmetic and the ALU
-- [ ] Week 3: Memory
+- [X] Week 3: Memory
 
 * Logisim files
 
