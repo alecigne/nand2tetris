@@ -4,66 +4,157 @@ My repo for the [[https://www.nand2tetris.org/]["nand2tetris" project]]. The cor
 a Modern Computer from First Principles: From Nand to Tetris", is
 available on [[https://www.coursera.org/learn/build-a-computer][Coursera]].
 
+The goal is to build a computer from the ground up, starting from the
+[[https://en.wikipedia.org/wiki/NAND_gate][=Nand= gate]] for combinational logic and the [[https://en.wikipedia.org/wiki/Flip-flop_(electronics)#Classical_positive-edge-triggered_D_flip-flop][=D flip-flop=]] for
+sequential logic, to the OS itself.
+
 * Progress
 
 - [X] Week 1: Boolean Functions and Gate Logic
 - [X] Week 2: Boolean Arithmetic and the ALU
 - [X] Week 3: Memory
+- [ ] Week 4: Machine Language (ongoing)
+- [ ] Week 5: Computer Architecture
+- [ ] Week 6: Assembler
+- [ ] Week 7: Machine Language & Virtual Machine I: Stack Arithmetic
+- [ ] Week 8: Virtual Machine II: Program Control
+- [ ] Week 9: High-Level Language
+- [ ] Week 10: Compiler I: Syntax Analysis
+- [ ] Week 11: Compiler II: Code Generation
+- [ ] Week 12: Operating System
+- [ ] Week 13: Postscript: More Fun to Go
 
 * Logisim files
 
-My goal is to implement most chips with [[http://www.cburch.com/logisim/][Logisim]] (=.circ= files). I
-might give a try to [[https://github.com/hneemann/Digital][Digital]] later.
+Although not required by the course, my goal is to implement most
+chips with [[http://www.cburch.com/logisim/][Logisim]] (=.circ= files). I might give a try to [[https://github.com/hneemann/Digital][Digital]]
+later.
 
-Here is the =Mux16= gate for example:
+When I already implemented a chip before, then I use the corresponding
+Logisim's built-in chip when it's available.
 
-[[file:.nand2tetris/Mux16.png]]
+Here is an example for sequential logic, starting from =RAM64= (a RAM
+with 64 16-bit registers) and going all the way to the D flip-flop:
 
-And here is the corresponding HDL file:
+** RAM64
+
+The =RAM64=: 8 ✕ =RAM8= + combinational gates (=DMux8Way=,
+=Mux8Way16=)
+
+*** Logisim representation
+
+[[file:.nand2tetris/RAM64.png]]
+
+*** HDL representation
 
 #+begin_example
-  CHIP Mux16 {
-          IN a[16], b[16], sel;
-          OUT out[16];
+  CHIP RAM64 {
+      IN in[16], load, address[6];
+      OUT out[16];
 
-          PARTS:
-          Mux(a=a[0], b=b[0], sel=sel, out=out[0]);
-          Mux(a=a[1], b=b[1], sel=sel, out=out[1]);
-          Mux(a=a[2], b=b[2], sel=sel, out=out[2]);
-          Mux(a=a[3], b=b[3], sel=sel, out=out[3]);
-          Mux(a=a[4], b=b[4], sel=sel, out=out[4]);
-          Mux(a=a[5], b=b[5], sel=sel, out=out[5]);
-          Mux(a=a[6], b=b[6], sel=sel, out=out[6]);
-          Mux(a=a[7], b=b[7], sel=sel, out=out[7]);
-          Mux(a=a[8], b=b[8], sel=sel, out=out[8]);
-          Mux(a=a[9], b=b[9], sel=sel, out=out[9]);
-          Mux(a=a[10], b=b[10], sel=sel, out=out[10]);
-          Mux(a=a[11], b=b[11], sel=sel, out=out[11]);
-          Mux(a=a[12], b=b[12], sel=sel, out=out[12]);
-          Mux(a=a[13], b=b[13], sel=sel, out=out[13]);
-          Mux(a=a[14], b=b[14], sel=sel, out=out[14]);
-          Mux(a=a[15], b=b[15], sel=sel, out=out[15]);
+      PARTS:
+      DMux8Way (in=load, sel=address[3..5], a=load1, b=load2, c=load3, d=load4, e=load5, f=load6, g=load7, h=load8);
+      RAM8 (in=in, load=load1, address=address[0..2], out=out1);
+      RAM8 (in=in, load=load2, address=address[0..2], out=out2);
+      RAM8 (in=in, load=load3, address=address[0..2], out=out3);
+      RAM8 (in=in, load=load4, address=address[0..2], out=out4);
+      RAM8 (in=in, load=load5, address=address[0..2], out=out5);
+      RAM8 (in=in, load=load6, address=address[0..2], out=out6);
+      RAM8 (in=in, load=load7, address=address[0..2], out=out7);
+      RAM8 (in=in, load=load8, address=address[0..2], out=out8);
+      Mux8Way16 (a=out1, b=out2, c=out3, d=out4, e=out5, f=out6, g=out7, h=out8, sel=address[3..5], out=out);
   }
 #+end_example
 
-When a chip has been implemented before, then I use the corresponding
-Logisim's built-in chip when it's available. For example, in this
-implementation of Mux16, I use Logisim's Mux, but the multiplexer
-itself has been implemented before from And, Not and Or:
+** RAM8
 
-[[file:.nand2tetris/Mux.png]]
+The =RAM8=: 8 ✕ =Register= + combinational gates (=DMux8Way=,
+=Mux8Way16=)
+
+*** Logisim representation
+
+[[file:.nand2tetris/RAM8.png]]
+
+*** HDL representation
 
 #+begin_example
-  CHIP Mux {
-          IN a, b, sel;
-          OUT out;
+  CHIP RAM8 {
+      IN in[16], load, address[3];
+      OUT out[16];
 
-          PARTS:
-          Not (in=sel, out=notsel);
-          And (a=a, b=notsel, out=aAndNotsel);
-          And (a=sel, b=b, out= selAndb);
-          Or (a=aAndNotsel, b=selAndb, out=out);
+      PARTS:
+      DMux8Way (in=load, sel=address, a=load1, b=load2, c=load3, d=load4, e=load5, f=load6, g=load7, h=load8);
+      Register (in=in, load=load1, out=out1);
+      Register (in=in, load=load2, out=out2);
+      Register (in=in, load=load3, out=out3);
+      Register (in=in, load=load4, out=out4);
+      Register (in=in, load=load5, out=out5);
+      Register (in=in, load=load6, out=out6);
+      Register (in=in, load=load7, out=out7);
+      Register (in=in, load=load8, out=out8);
+      Mux8Way16 (a=out1, b=out2, c=out3, d=out4, e=out5, f=out6, g=out7, h=out8, sel=address, out=out);
   }
 #+end_example
 
-...and so on all the way to [[https://en.wikipedia.org/wiki/NAND_gate][Nand]]!
+** Register
+
+The =Register= (16-bit register): 16 ✕ =Bit=.
+
+*** Logisim representation
+
+[[file:.nand2tetris/Register.png]]
+
+*** HDL representation
+
+#+begin_example
+  CHIP Register {
+      IN in[16], load;
+      OUT out[16];
+
+      PARTS:
+      Bit (in=in[0], load=load, out=out[0]);
+      Bit (in=in[1], load=load, out=out[1]);
+      Bit (in=in[2], load=load, out=out[2]);
+      Bit (in=in[3], load=load, out=out[3]);
+      Bit (in=in[4], load=load, out=out[4]);
+      Bit (in=in[5], load=load, out=out[5]);
+      Bit (in=in[6], load=load, out=out[6]);
+      Bit (in=in[7], load=load, out=out[7]);
+      Bit (in=in[8], load=load, out=out[8]);
+      Bit (in=in[9], load=load, out=out[9]);
+      Bit (in=in[10], load=load, out=out[10]);
+      Bit (in=in[11], load=load, out=out[11]);
+      Bit (in=in[12], load=load, out=out[12]);
+      Bit (in=in[13], load=load, out=out[13]);
+      Bit (in=in[14], load=load, out=out[14]);
+      Bit (in=in[15], load=load, out=out[15]);
+  }
+#+end_example
+
+** Bit
+
+The =Bit= (1-bit register): =DFF= (D flip-flop) + combinational gate
+(=Mux=)
+
+*** Logisim representation
+
+[[file:.nand2tetris/Bit.png]]
+
+*** HDL representation
+
+#+begin_example
+  CHIP Bit {
+      IN in, load;
+      OUT out;
+
+      PARTS:
+      Mux (a=feedback, b=in, sel=load, out=muxout);
+      DFF (in=muxout, out=feedback, out=out);
+  }
+#+end_example
+
+** DFF
+
+The =DFF= (D flip-flop) can be implemented from =Nand= gates. In the
+course, it is already provided in order to separate clearly the
+combinational logic from the sequential logic.
