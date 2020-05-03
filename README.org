@@ -13,8 +13,8 @@ sequential logic, to the OS itself.
 - [X] Week 1: Boolean Functions and Gate Logic
 - [X] Week 2: Boolean Arithmetic and the ALU
 - [X] Week 3: Memory
-- [ ] Week 4: Machine Language (ongoing)
-- [ ] Week 5: Computer Architecture
+- [X] Week 4: Machine Language
+- [ ] Week 5: Computer Architecture (ongoing)
 - [ ] Week 6: Assembler
 - [ ] Week 7: Machine Language & Virtual Machine I: Stack Arithmetic
 - [ ] Week 8: Virtual Machine II: Program Control
