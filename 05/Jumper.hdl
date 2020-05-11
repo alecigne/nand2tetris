@@ -1,0 +1,17 @@
+CHIP Jumper {
+
+	IN  zr, ng, j1, j2, j3;
+	OUT jump;
+
+	PARTS:
+	Not (in=zr, out=not-zr);
+	Not (in=ng, out=not-ng);
+
+	And (a=ng, b=j1, out=and1);
+	And (a=zr, b=j2, out=and2);
+	And (a=not-ng, b=not-zr, out=and3);
+	And (a=and3, b=j3, out=and4);
+
+	Or (a=and1, b=and2, out=or1);
+	Or (a=or1, b=and4, out=jump);
+}
