@@ -10,19 +10,24 @@ sequential logic, to the OS itself.
 
 * Progress
 
+** DONE Part 1
+
 - [X] Week 1: Boolean Functions and Gate Logic
 - [X] Week 2: Boolean Arithmetic and the ALU
 - [X] Week 3: Memory
 - [X] Week 4: Machine Language
 - [X] Week 5: Computer Architecture
-- [ ] Week 6: Assembler (ongoing)
-- [ ] Week 7: Machine Language & Virtual Machine I: Stack Arithmetic
-- [ ] Week 8: Virtual Machine II: Program Control
-- [ ] Week 9: High-Level Language
-- [ ] Week 10: Compiler I: Syntax Analysis
-- [ ] Week 11: Compiler II: Code Generation
-- [ ] Week 12: Operating System
-- [ ] Week 13: Postscript: More Fun to Go
+- [X] Week 6: Assembler
+
+** TODO Part 2
+
+- [ ] Week 1: Machine Language & Virtual Machine I: Stack Arithmetic
+- [ ] Week 2: Virtual Machine II: Program Control
+- [ ] Week 3: High-Level Language
+- [ ] Week 4: Compiler I: Syntax Analysis
+- [ ] Week 5: Compiler II: Code Generation
+- [ ] Week 6: Operating System
+- [ ] Week 7: Postscript: More Fun to Go
 
 * Logisim files
 
